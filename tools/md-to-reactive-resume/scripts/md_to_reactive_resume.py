@@ -309,7 +309,7 @@ def fill_template(
     if basics["linkedin"]:
         out["basics"]["website"] = {
             "url": basics["linkedin"],
-            "label": basics["linkedin"],
+            "label": "LinkedIn",
         }
     # Headline: first job title if not provided
     out["basics"]["headline"] = headline or (jobs[0]["position"] if jobs else "")

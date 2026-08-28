@@ -1,6 +1,9 @@
 # Local / secrets (do not commit)
 output/*
 !output/.gitkeep
+# Per-job tailored outputs - keep local; never commit
+jobs/*
+!jobs/.gitkeep
 tools/md-to-reactive-resume/.env
 tools/md-to-reactive-resume/.rxresu_api_key
 tools/md-to-reactive-resume/reactive-resume-api-key.txt
