@@ -1,6 +1,6 @@
 ---
 name: tailor-resume
-description: Tailor resume.md for a specific job—fit report, honest tailored resume, change summary, PR-ready outputs.
+description: Tailor resume.md for a specific job—fit report, honest tailored resume, change summary, PR-ready outputs. Optionally convert and upload tailored-resume.md to Reactive Resume (rxresu.me) when the user asks.
 ---
 
 # Tailor resume for one job
@@ -17,6 +17,18 @@ description: Tailor resume.md for a specific job—fit report, honest tailored r
 3. **Tailor** — Load `references/keyword-alignment.md` and `references/markdown-resume-structure.md`. Write `tailored-resume.md` by rephrasing/reordering/emphasizing facts from `resume.md` only.
 4. **Change summary** — Load `references/change-summary.md`. Document every meaningful edit in `change-summary.md`.
 5. **Quality** — Skim `references/anti-patterns.md` and `references/agent-governance.md`. Optional: note plaintext test steps from `references/export-and-plaintext-test.md`.
+6. **Reactive Resume upload (optional)** — Run **only** when the user asks to upload (e.g. “and upload to reactive resume”, “md-to-reactive-resume”, or `--upload`). Do not invent JSON; run the deterministic script:
+
+```powershell
+python tools/md-to-reactive-resume/scripts/md_to_reactive_resume.py `
+  --input jobs/<company-slug>/<role-slug>/tailored-resume.md `
+  --upload
+```
+
+- Company/role are inferred from that path.
+- Reply with local JSON path (`output/...`), resume id/name/slug, and https://rxresu.me/dashboard/resumes
+- If the API key is missing, keep the markdown outputs and report the key setup error clearly (see `tools/md-to-reactive-resume/README.md`).
+- For upload-only (no re-tailor), invoke the **`md-to-reactive-resume`** skill instead.
 
 ## Output paths
 

@@ -1,0 +1,8 @@
+# Local / secrets (do not commit)
+output/*
+!output/.gitkeep
+tools/md-to-reactive-resume/.env
+tools/md-to-reactive-resume/.rxresu_api_key
+tools/md-to-reactive-resume/reactive-resume-api-key.txt
+*.upload.json
+.env

@@ -1,0 +1,4 @@
+.env
+.rxresu_api_key
+reactive-resume-api-key.txt
+*.upload.json

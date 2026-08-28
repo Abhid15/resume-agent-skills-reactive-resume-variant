@@ -1,0 +1,639 @@
+{
+  "picture": {
+    "hidden": false,
+    "url": "https://rxresu.me/api/uploads/019bef8e-c1ca-73eb-86bc-d6f804171754/pictures/1782554858214.jpeg",
+    "size": 80,
+    "rotation": 0,
+    "aspectRatio": 1,
+    "borderRadius": 0,
+    "borderColor": "rgba(0, 0, 0, 0.5)",
+    "borderWidth": 0.5,
+    "shadowColor": "rgba(0, 0, 0, 0.5)",
+    "shadowWidth": 0
+  },
+  "basics": {
+    "name": "Abhishek Das",
+    "headline": "Engineering Manager – Conversational AI & Automated Resolution Platforms",
+    "email": "abhishek_das@protonmail.com",
+    "phone": "+919620274747",
+    "location": "Pune, Maharashtra, IN",
+    "website": {
+      "url": "https://www.linkedin.com/in/abhishek-das-a9107893",
+      "label": "https://www.linkedin.com/in/abhishek-das-a9107893"
+    },
+    "customFields": [
+      {
+        "id": "019cc744-b005-723d-93c0-413bc3aee514",
+        "icon": "acorn",
+        "text": "https://github.com/Abhid15",
+        "link": ""
+      }
+    ]
+  },
+  "summary": {
+    "title": "",
+    "icon": "",
+    "columns": 1,
+    "hidden": false,
+    "keepTogether": false,
+    "startOnNewPage": false,
+    "content": "<p>Engineering Manager with 12+ years shipping enterprise SaaS and leading AI-forward teams. At Coupa Risk, manage 11+ engineers while owning AI SDLC adoption: restructured CRA for AI-native development (tool calls −75%, tokens ~12K→~3K, query time 45–60s→10–15s), shipped 6+ production CRA Skills, and built tooling (Smart Context Builder, Presentation Generator ~80% token savings, Coupa-safe Firecrawl). Also delivered GenAI automated resolution (70–90% effort reduction at ~87% accuracy), .NET modernization, and REST/Symphony platform features. AI DLC &amp; AI Engineering Champions (Pune). AWS Certified Solutions Architect.</p>"
+  },
+  "sections": {
+    "profiles": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": [
+        {
+          "id": "019cc743-4994-7426-9d96-6fbe6b7a921e",
+          "hidden": false,
+          "icon": "linkedin-logo",
+          "iconColor": "",
+          "network": "LinkedIn",
+          "username": "",
+          "website": {
+            "url": "https://www.linkedin.com/in/abhishek-das-a9107893",
+            "label": "LinkedIn",
+            "inlineLink": false
+          }
+        }
+      ]
+    },
+    "experience": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": [
+        {
+          "id": "019cc743-4993-7549-b390-ab98d5c8063c",
+          "hidden": false,
+          "company": "Coupa Software",
+          "position": "Manager, Software Engineering – Risk Platform & AI",
+          "location": "Pune, IN",
+          "period": "2023-06 - Present",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<p>Manager, Software Engineering in Coupa Risk (Markets 1 &amp; 3) — hands-on AI and platform leadership while managing <strong>11+ engineers</strong>.</p><ul><li><strong>CRA AI-native restructure:</strong> Redesigned CRA for AI coding tools (Cursor, Claude Code, Codex, Copilot, Gemini CLI) with AGENTS.md hierarchy, universal skills, and domain context — cut AI tool calls <strong>75%</strong> (8–12 → 2–3), context tokens ~12K → ~3K, query time 45–60s → 10–15s.</li><li><strong>AI POD &amp; SDLC:</strong> Led AI POD from inception; shipped <strong>6+</strong> production CRA Skills (React UI/Figma-to-code, REST API scaffolding, RFC generation, bug triage, Smart Context Builder, release tracker) with quality gates for Skills creation.</li><li><strong>Developer tooling:</strong> Built Smart Context Builder (MCP: JIRA, Confluence, GitHub + Firecrawl); Presentation Generator CLI cutting AI token usage ~<strong>80%</strong>; led Coupa-safe Firecrawl hackathon (AGPL-3.0, n8n/CLI integrations, CCP + Okta SSO roadmap).</li><li><strong>GenAI product:</strong> Shipped production automated resolution (Python, LangChain, RAG) — SQL drafting effort down 70–90% at ~87% accuracy; scoped AI Eval Summary epic via POCs and design.</li><li><strong>Platform delivery:</strong> Led .NET upgrade and BizTalk alternative maintenance for enterprise clients (Accenture, Webster, Chubb); designed REST UDF PUT APIs, Symphony search enhancements, and UDO interactive grid/card modernization.</li><li><strong>Process automation:</strong> n8n Design Doc orchestration from Scoping Docs (hours saved for Product); Managerial Repo for manager workflows; refined release planning and capacity.</li><li>Prior releases R42–R44 at <strong>90%+ on-time</strong>; 'Road to Zero JZs' cut backlog 175+ → 99 (<strong>40%</strong>); interview loop including Sr. Manager AI/ML; mentored beyond Risk on AI practices.</li></ul>",
+          "roles": []
+        },
+        {
+          "id": "019cc743-4993-7549-b390-adc368594c1d",
+          "hidden": false,
+          "company": "Coupa Software",
+          "position": "Lead Software Engineer – Cloud Analytics Platform",
+          "location": "Pune, IN",
+          "period": "September 2021 - June 2023",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<ul><li>Architected a cloud-based analytics pipeline on AWS integrating MSSQL, MySQL, and Snowflake — boosting data throughput by <strong>50%</strong> through scalable distributed architecture.</li><li>Implemented ELK-based observability stack reducing production downtime by <strong>40%</strong>; owned latency optimisation and alerting across high-traffic services — directly relevant to token cost management and AI service reliability.</li><li>Served as hands-on technical lead for code reviews, architecture decisions, and incident triage across production systems.</li><li>Improved sprint predictability by <strong>20%</strong> through Scrum maturity improvements.</li></ul>",
+          "roles": []
+        },
+        {
+          "id": "019cc743-4993-7549-b390-b1035ba362e0",
+          "hidden": false,
+          "company": "Siemens Industry Software",
+          "position": "UI Architect & Technical Evangelist",
+          "location": "",
+          "period": "April 2020 - August 2021",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<ul><li>Owned development and release of the MOM UI framework adopted as an internal platform across Siemens industrial tools — serving 50+ engineers across teams globally.</li><li>Automated CI/CD pipelines and testing frameworks, reducing regression bugs by <strong>30%</strong> and doubling development velocity for onboarded teams.</li><li>Founded a Community of Practice with <strong>50+ engineers</strong>, driving platform adoption and knowledge sharing across a distributed org.</li></ul>",
+          "roles": []
+        },
+        {
+          "id": "019cc743-4993-7549-b390-b4ac3f404f34",
+          "hidden": false,
+          "company": "Siemens Industry Software",
+          "position": "Full Stack Senior Developer / Scrum Master",
+          "location": "",
+          "period": "April 2018 - April 2020",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<ul><li>Developed ASP.NET Core microservices and GraphQL integrations; reduced API response times by <strong>40%</strong>.</li><li>Served as Scrum Master, improving team velocity by <strong>25%</strong>.</li><li>Built a manufacturing analytics dashboard ranked <strong>Top 30 globally</strong> in the Siemens Hackathon out of 300+ submissions.</li></ul>",
+          "roles": []
+        },
+        {
+          "id": "019cc743-4993-7549-b390-bbc6e71956d2",
+          "hidden": false,
+          "company": "Dell Information Services",
+          "position": "Software Engineer II",
+          "location": "",
+          "period": "October 2015 - April 2018",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<ul><li>Built scalable web services powering Dell's device platforms at high traffic volumes.</li><li>Built automated testing harness reducing QA defects by <strong>25%</strong>.</li><li>Led modernization initiative migrating legacy monolithic systems to microservices architecture.</li></ul>",
+          "roles": []
+        },
+        {
+          "id": "019cc743-4993-7549-b390-bcf152f152b3",
+          "hidden": false,
+          "company": "Wipro Technologies",
+          "position": "Project Engineer",
+          "location": "",
+          "period": "April 2012 - October 2015",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<ul><li>Developed CRM systems for Capital One using .NET MVC; implemented logging and monitoring improving error resolution by <strong>30%</strong>.</li><li>Maintained 90% automated test coverage; improved engineering productivity by <strong>98%</strong> through automation scripts.</li></ul>",
+          "roles": []
+        }
+      ]
+    },
+    "education": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": [
+        {
+          "id": "019cc743-4993-7549-b390-c226cad5c30b",
+          "hidden": false,
+          "school": "Institute of Technical Education and Research, Bhubaneswar",
+          "degree": "Bachelor of Technology in Electrical Engineering",
+          "area": "Electrical Engineering",
+          "grade": "CGPA 8.62",
+          "location": "",
+          "period": "2008 - 2012",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": ""
+        },
+        {
+          "id": "019cc743-4993-7549-b390-c4e0134a76d6",
+          "hidden": false,
+          "school": "Buxi Jagabandhu English Medium School, Bhubaneswar",
+          "degree": "12th Standard (CBSE)",
+          "area": "",
+          "grade": "69%",
+          "location": "",
+          "period": "2006 - 2008",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": ""
+        },
+        {
+          "id": "019cc743-4993-7549-b390-c8c72fc2d36a",
+          "hidden": false,
+          "school": "St. Xavier's High School, Bhubaneswar",
+          "degree": "10th Standard (CBSE)",
+          "area": "",
+          "grade": "85%",
+          "location": "",
+          "period": "2005 - 2006",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": ""
+        }
+      ]
+    },
+    "projects": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": []
+    },
+    "skills": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": [
+        {
+          "id": "019cc743-sk1-genai-cxai",
+          "hidden": false,
+          "icon": "star",
+          "iconColor": "",
+          "name": "GenAI & LLM Engineering",
+          "proficiency": "",
+          "level": 0,
+          "keywords": [
+            "Python",
+            "LangChain",
+            "LlamaIndex",
+            "RAG Pipelines",
+            "Prompt Engineering",
+            "Agentic Workflows",
+            "CRA Skills / AGENTS.md",
+            "Cursor / Claude Code / Copilot",
+            "LLM Evaluation",
+            "AI Guardrails & PII Safety",
+            "Firecrawl / n8n",
+            "Vector Databases"
+          ]
+        },
+        {
+          "id": "019cc743-4993-7549-b390-ccae59be5395",
+          "hidden": false,
+          "icon": "star",
+          "iconColor": "",
+          "name": "Engineering Leadership",
+          "proficiency": "",
+          "level": 0,
+          "keywords": [
+            "11+ Engineer Management",
+            "AI POD Leadership",
+            "AI Strategy & Roadmap",
+            "Hiring & Talent Development",
+            "Mentorship & Coaching",
+            "Cross-Org Collaboration"
+          ]
+        },
+        {
+          "id": "019cc743-4993-7549-b390-d39c9c2d246e",
+          "hidden": false,
+          "icon": "star",
+          "iconColor": "",
+          "name": "Cloud & Distributed Systems",
+          "proficiency": "",
+          "level": 0,
+          "keywords": [
+            "AWS",
+            "Microservices",
+            "REST APIs",
+            "GraphQL",
+            "High-Availability Systems",
+            "Snowflake",
+            ".NET Core",
+            "C#"
+          ]
+        },
+        {
+          "id": "019cc743-4993-7549-b390-da1881053943",
+          "hidden": false,
+          "icon": "star",
+          "iconColor": "",
+          "name": "Reliability & Compliance",
+          "proficiency": "",
+          "level": 0,
+          "keywords": [
+            "Latency Optimisation",
+            "Token Cost Management",
+            "Fallback Mechanisms",
+            "Incident Response",
+            "Compliance-Aware AI Systems",
+            "CI/CD",
+            "Jenkins"
+          ]
+        },
+        {
+          "id": "019cc743-4993-7549-b390-dd85035ff701",
+          "hidden": false,
+          "icon": "star",
+          "iconColor": "",
+          "name": "Observability",
+          "proficiency": "",
+          "level": 0,
+          "keywords": [
+            "ELK Stack",
+            "Monitoring & Alerting",
+            "Production Logging",
+            "SLA Ownership"
+          ]
+        },
+        {
+          "id": "019cc743-4993-7549-b390-d70b0f94e85d",
+          "hidden": false,
+          "icon": "star",
+          "iconColor": "",
+          "name": "Frontend",
+          "proficiency": "",
+          "level": 0,
+          "keywords": [
+            "React",
+            "JavaScript",
+            "HTML",
+            "CSS"
+          ]
+        }
+      ]
+    },
+    "languages": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": [
+        {
+          "id": "019cc743-4993-7549-b390-e1bf3f263abf",
+          "hidden": false,
+          "language": "English",
+          "fluency": "Professional",
+          "level": 0
+        },
+        {
+          "id": "019cc743-4993-7549-b390-e7a6fd6715a6",
+          "hidden": false,
+          "language": "Hindi",
+          "fluency": "Professional",
+          "level": 0
+        },
+        {
+          "id": "019cc743-4993-7549-b390-eb718242f717",
+          "hidden": false,
+          "language": "Odiya",
+          "fluency": "Native",
+          "level": 5
+        }
+      ]
+    },
+    "interests": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": [
+        {
+          "id": "019cc743-4993-7549-b390-ec928b97dadd",
+          "hidden": false,
+          "icon": "star",
+          "iconColor": "",
+          "name": "Science Fiction",
+          "keywords": []
+        },
+        {
+          "id": "019cc743-4993-7549-b390-f1d5c4cd4d89",
+          "hidden": false,
+          "icon": "star",
+          "iconColor": "",
+          "name": "Table Tennis",
+          "keywords": []
+        },
+        {
+          "id": "019cc743-4993-7549-b390-f7eb472be16a",
+          "hidden": false,
+          "icon": "star",
+          "iconColor": "",
+          "name": "Football",
+          "keywords": []
+        }
+      ]
+    },
+    "awards": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": [
+        {
+          "id": "019cc6f2-2106-77fe-954a-cdd63181d2c0",
+          "hidden": false,
+          "title": "Top 30 Finalist – Siemens Global Hackathon",
+          "awarder": "Siemens",
+          "date": "2018",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<p>Selected among top 30 out of 300+ global submissions. Built an intelligent context-aware assistant bot that could embed into any enterprise application, study usage data, surface proactive suggestions, and execute quick actions on behalf of users — an early conversational AI agent. Stack: AWS ML, AWS Lex (NLP), AWS Lambda, ASP.NET C#, JavaScript, Angular, HTML/CSS.</p>"
+        },
+        {
+          "id": "019cc6f2-2106-77fe-954a-d3f102769d8f",
+          "hidden": false,
+          "title": "Top 30 Finalist – Siemens Global Hackathon",
+          "awarder": "Siemens",
+          "date": "2019",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<p>Top 30 out of 300+ global submissions. Built an ABAC (Attribute-Based Access Control) framework delivering fine-grained, dynamic authorisation without role explosion or changes to core application logic — directly applicable to AI guardrail and compliance system design. Stack: AWS ML, ASP.NET C#, ABAC principles.</p>"
+        },
+        {
+          "id": "019f088b-3b41-7613-ad5e-a032633e9f6f",
+          "hidden": false,
+          "title": "Value Multiplier Award Q1 2026",
+          "awarder": "Coupa Software",
+          "date": "2026",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<p>Recognition for leading AI SDLC implementation for Coupa Risk — CRA AI-native restructure, Skills quality gates, and org AI adoption.</p>"
+        },
+        {
+          "id": "019f088b-3b41-7613-ad5e-a032633e9f70",
+          "hidden": false,
+          "title": "Golden Ticket – Coupa Inspire Devcon",
+          "awarder": "Coupa Software",
+          "date": "2026",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<p>Selected for Coupa Inspire Devcon, Las Vegas.</p>"
+        },
+        {
+          "id": "019f088b-3b41-7613-ad5e-a032633e9f71",
+          "hidden": false,
+          "title": "AI DLC Champions Committee",
+          "awarder": "Coupa Software",
+          "date": "2026",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<p>Company-wide committee advancing AI development lifecycle practices.</p>"
+        },
+        {
+          "id": "019f088b-3b41-7613-ad5e-a032633e9f72",
+          "hidden": false,
+          "title": "AI Engineering Champions Committee",
+          "awarder": "Coupa Software",
+          "date": "2026",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": "<p>Pune representative for AI engineering champions initiatives.</p>"
+        }
+      ]
+    },
+    "certifications": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": [
+        {
+          "id": "019cc743-4993-7549-b390-fb0975eaa172",
+          "hidden": false,
+          "title": "AWS Certified Solutions Architect – Associate",
+          "issuer": "Amazon Web Services",
+          "date": "2020",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": ""
+        },
+        {
+          "id": "019cc743-4993-7549-b390-fdf3d14c22f0",
+          "hidden": false,
+          "title": "Certified ScrumMaster – Scrum Alliance",
+          "issuer": "Scrum Alliance",
+          "date": "2020",
+          "website": {
+            "url": "",
+            "label": "",
+            "inlineLink": false
+          },
+          "description": ""
+        }
+      ]
+    },
+    "publications": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": []
+    },
+    "volunteer": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": []
+    },
+    "references": {
+      "title": "",
+      "icon": "",
+      "columns": 1,
+      "hidden": false,
+      "keepTogether": false,
+      "startOnNewPage": false,
+      "items": []
+    }
+  },
+  "customSections": [],
+  "metadata": {
+    "template": "glalie",
+    "layout": {
+      "sidebarWidth": 35,
+      "pages": [
+        {
+          "fullWidth": false,
+          "main": [
+            "profiles",
+            "summary",
+            "education",
+            "experience",
+            "projects",
+            "volunteer",
+            "references"
+          ],
+          "sidebar": [
+            "skills",
+            "certifications",
+            "awards",
+            "languages",
+            "interests",
+            "publications"
+          ]
+        }
+      ]
+    },
+    "page": {
+      "gapX": 4,
+      "gapY": 6,
+      "marginX": 14,
+      "marginY": 12,
+      "format": "a4",
+      "locale": "en-US",
+      "hideLinkUnderline": false,
+      "hideIcons": false,
+      "hideSectionIcons": true
+    },
+    "design": {
+      "level": {
+        "icon": "star",
+        "type": "circle"
+      },
+      "colors": {
+        "primary": "rgba(0, 146, 184, 1)",
+        "text": "rgba(0, 0, 0, 1)",
+        "background": "rgba(255, 255, 255, 1)"
+      }
+    },
+    "typography": {
+      "body": {
+        "fontFamily": "IBM Plex Serif",
+        "fontWeights": [
+          "400",
+          "500"
+        ],
+        "fontSize": 10,
+        "lineHeight": 1.5
+      },
+      "heading": {
+        "fontFamily": "IBM Plex Serif",
+        "fontWeights": [
+          "600"
+        ],
+        "fontSize": 14,
+        "lineHeight": 1.5
+      }
+    },
+    "notes": "",
+    "styleRules": []
+  }
+}
