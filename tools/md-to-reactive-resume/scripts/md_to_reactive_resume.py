@@ -622,8 +622,9 @@ def load_env_file(path: Path) -> None:
 def resolve_api_key() -> str:
     tool_root = Path(__file__).resolve().parent.parent
     repo_root = tool_root.parent.parent  # resume-agent-skills/
-    load_env_file(tool_root / ".env")
+    # Prefer shared repo-root .env for all PATs; tool-local files remain fallbacks.
     load_env_file(repo_root / ".env")
+    load_env_file(tool_root / ".env")
     key = (
         os.environ.get("RXRESU_API_KEY")
         or os.environ.get("REACTIVE_RESUME_API_KEY")
@@ -641,9 +642,9 @@ def resolve_api_key() -> str:
                     break
     if not key:
         raise ValueError(
-            "Missing API key. Set RXRESU_API_KEY (env or "
-            "tools/md-to-reactive-resume/.env), or put the key in "
-            "tools/md-to-reactive-resume/reactive-resume-api-key.txt. "
+            "Missing API key. Set RXRESU_API_KEY in repo-root .env "
+            "(see .env.example), or tools/md-to-reactive-resume/.env / "
+            "reactive-resume-api-key.txt. "
             "Create a key at https://rxresu.me → Settings → API Keys. "
             "Docs: https://docs.rxresu.me/guides/using-the-api"
         )

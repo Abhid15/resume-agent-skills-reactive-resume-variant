@@ -16,11 +16,13 @@ Do **not** hand-author or LLM-invent the Reactive Resume JSON.
 Requires an API key ([Using the API](https://docs.rxresu.me/guides/using-the-api)):
 
 1. rxresu.me → Settings → API Keys → create key
-2. Put it in `tools/md-to-reactive-resume/reactive-resume-api-key.txt` (single line), or `.env`:
+2. Prefer **repo-root** `.env` (see [`.env.example`](../../.env.example)):
 
 ```env
 RXRESU_API_KEY=rr_...
 ```
+
+3. Fallbacks: `tools/md-to-reactive-resume/reactive-resume-api-key.txt` (single line) or `tools/md-to-reactive-resume/.env`
 
 ```powershell
 python tools/md-to-reactive-resume/scripts/md_to_reactive_resume.py `

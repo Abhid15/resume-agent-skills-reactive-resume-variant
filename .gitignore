@@ -1,4 +1,6 @@
 # Local / secrets (do not commit)
+.env
+.env.example.bak
 output/*
 !output/.gitkeep
 # Per-job tailored outputs - keep local; never commit
@@ -7,5 +9,6 @@ jobs/*
 tools/md-to-reactive-resume/.env
 tools/md-to-reactive-resume/.rxresu_api_key
 tools/md-to-reactive-resume/reactive-resume-api-key.txt
+tools/scrape-job/.env
+tools/scrape-job/firecrawl-api-key.txt
 *.upload.json
-.env

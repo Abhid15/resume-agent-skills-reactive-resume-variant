@@ -12,7 +12,18 @@ description: Tailor resume.md for a specific job—fit report, honest tailored r
 
 ## Workflow
 
-1. **Ingest** — Read the per-run prompt (company, role, URL, JD, output paths). Load `references/jd-extraction-taxonomy.md` and classify JD requirements.
+1. **Ingest** — Read the per-run prompt (company, role, URL, JD, output paths).
+   - If a job **URL** is present and there is **no substantial pasted JD**, scrape first (do not invent JD text):
+     ```powershell
+     python tools/scrape-job/scripts/scrape_job.py `
+       --url "<job-url>" `
+       --company <company-slug> `
+       --role <role-slug>
+     ```
+     Prefer Firecrawl CLI when installed (`firecrawl scrape`); the script uses CLI if available, else Firecrawl Cloud API. Requires `FIRECRAWL_API_KEY` in repo-root `.env` (see `.env.example`). Live Firecrawl usage details: `.cursor/skills/firecrawl/SKILL.md`.
+   - Read `jobs/<company-slug>/<role-slug>/jd.md` as the JD source when scraped.
+   - If scrape fails or returns empty/login-wall content, **stop and ask the user to paste the JD**—do not invent requirements.
+   - Load `references/jd-extraction-taxonomy.md` and classify JD requirements.
 2. **Fit report** — Load `references/fit-report.md`. Pick the fit tier from that reference and include the required `**Verdict:**` line. Write `jobs/<company-slug>/<role-slug>/fit-report.md` with **Overall fit**, **Strong matches**, **Gaps**, **Do not add**.
 3. **Tailor** — Load `references/keyword-alignment.md` and `references/markdown-resume-structure.md`. Write `tailored-resume.md` by rephrasing/reordering/emphasizing facts from `resume.md` only.
 4. **Change summary** — Load `references/change-summary.md`. Document every meaningful edit in `change-summary.md`.
@@ -34,14 +45,19 @@ python tools/md-to-reactive-resume/scripts/md_to_reactive_resume.py `
 
 Per-run prompt specifies:
 
+- `jobs/<company-slug>/<role-slug>/jd.md` (when scraped from URL)
 - `jobs/<company-slug>/<role-slug>/fit-report.md`
 - `jobs/<company-slug>/<role-slug>/tailored-resume.md`
 - `jobs/<company-slug>/<role-slug>/change-summary.md`
 
 Slug rules: lowercase, hyphenated; strip legal suffixes (Inc, LLC, Ltd) from company names.
 
+## Secrets
+
+All PATs live in **repo-root `.env`** (gitignored). Copy `.env.example` → `.env`. Never commit `.env` or print keys in chat.
+
 ## PR
 
 Title: `feat: tailor resume for <role> at <company>`
 
-Commit all three files on the agent branch. Do not modify `resume.md` on `main`.
+Commit skill/tooling changes on the agent branch. Do **not** commit `jobs/` outputs or `.env`. Do not modify `resume.md` on `main`.
