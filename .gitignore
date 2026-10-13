@@ -12,3 +12,6 @@ tools/md-to-reactive-resume/reactive-resume-api-key.txt
 tools/scrape-job/.env
 tools/scrape-job/firecrawl-api-key.txt
 *.upload.json
+# Local source dumps / PDF exports (do not commit)
+*.pdf
+ad-*-resume.json

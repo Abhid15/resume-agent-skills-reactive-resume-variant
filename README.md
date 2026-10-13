@@ -49,9 +49,11 @@ The agent should:
 4. Write under `jobs/<company>/<role>/`:
    - `fit-report.md`
    - `tailored-resume.md`
+   - `cover-letter.md`
    - `change-summary.md`
-5. Optionally upload to Reactive Resume when asked
-6. Open a PR via `autoCreatePR` (cloud agent flows) — **do not commit `jobs/` or `.env`**
+5. Expand cryptic phrasing and Humanize `tailored-resume.md` and `cover-letter.md` (see `.cursor/skills/humanizer/SKILL.md`)
+6. Optionally upload to Reactive Resume when asked
+7. Open a PR via `autoCreatePR` (cloud agent flows) — **do not commit `jobs/` or `.env`**
 
 `fit-report.md` must include **Overall fit** with `**Tier:**`, `**Verdict:**`, Strong matches, Gaps, and **Do not add**.
 
@@ -85,8 +87,9 @@ Details: [`tools/md-to-reactive-resume/README.md`](tools/md-to-reactive-resume/R
 
 | Skill | Purpose |
 |-------|---------|
-| `tailor-resume` | Scrape (if needed) + fit report + tailored MD + change summary (+ optional upload) |
+| `tailor-resume` | Scrape (if needed) + fit report + tailored MD + cover letter + Humanizer prose pass + change summary (+ optional upload) |
 | `md-to-reactive-resume` | Convert/upload only (no re-tailor) |
+| `humanizer` | Remove AI writing tells; used by `tailor-resume` on resume and cover letter prose |
 | `firecrawl` | Live Firecrawl CLI / Cloud usage for web scrape and related tools |
 
 ## Notes

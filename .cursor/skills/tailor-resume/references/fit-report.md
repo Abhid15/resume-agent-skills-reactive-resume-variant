@@ -33,6 +33,6 @@ Skills or themes underrepresented vs JD; honest framing only.
 
 ## Do not add
 
-List JD items with **no** support in `resume.md`. These must not appear in `tailored-resume.md`.
+List JD items with **no** support in `resume.md`. These must not appear in `tailored-resume.md` or `cover-letter.md`.
 
 Optional: searchability checklist (title match, core stack named, years of experience visible).
