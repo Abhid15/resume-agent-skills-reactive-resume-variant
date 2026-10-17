@@ -3,7 +3,7 @@
 Deterministic converter: tailored-resume.md → Reactive Resume JSON.
 
 No LLM. Parse markdown → fill template → write
-  <out-root>/<company-slug>/abhishek-das-em-<company-slug>.json
+  <out-root>/<profile>/<company-slug>/<name-slug>-<role>-<company-slug>.json
 
 Expected markdown shape (resume-agent / tailor-resume format):
 
@@ -17,7 +17,9 @@ Expected markdown shape (resume-agent / tailor-resume format):
   - **Group:** a, b, c
   ## Certifications   (optional)
   ## Awards & recognition  (optional)
+  ## Languages         (optional)
   ## Education
+  (education is a markdown list: B.Tech, 12th, 10th, …)
 """
 
 from __future__ import annotations
@@ -31,6 +33,17 @@ import sys
 import uuid
 from pathlib import Path
 from typing import Any
+
+
+REPO_ROOT = Path(__file__).resolve().parents[3]
+
+TAIL_HEADINGS = [
+    "Skills",
+    "Certifications",
+    "Awards & recognition",
+    "Languages",
+    "Education",
+]
 
 
 LEGAL_SUFFIXES = re.compile(
@@ -80,7 +93,7 @@ def parse_summary(md: str) -> str:
     body = section_body(
         md,
         "Summary",
-        ["Work Experience", "Skills", "Certifications", "Awards & recognition", "Education"],
+        ["Work Experience", *TAIL_HEADINGS],
     )
     if not body:
         raise ValueError("Missing ## Summary")
@@ -91,7 +104,7 @@ def parse_jobs(md: str) -> list[dict[str, Any]]:
     body = section_body(
         md,
         "Work Experience",
-        ["Skills", "Certifications", "Awards & recognition", "Education"],
+        TAIL_HEADINGS,
     )
     if not body:
         raise ValueError("Missing ## Work Experience")
@@ -152,7 +165,7 @@ def parse_skills(md: str) -> list[dict[str, Any]]:
     body = section_body(
         md,
         "Skills",
-        ["Certifications", "Awards & recognition", "Education"],
+        TAIL_HEADINGS[1:],
     )
     if not body:
         raise ValueError("Missing ## Skills")
@@ -170,13 +183,13 @@ def parse_skills(md: str) -> list[dict[str, Any]]:
 
 def parse_certifications(md: str) -> list[dict[str, str]]:
     body = section_body(
-        md, "Certifications", ["Awards & recognition", "Education"]
+        md, "Certifications", TAIL_HEADINGS[2:]
     )
     if not body:
         return []
     certs: list[dict[str, str]] = []
     for line in body.splitlines():
-        m = re.match(r"^- (.+?)\s*\((\d{4})\)\s*$", line.strip())
+        m = re.match(r"^- (.+?)\s*\((?:issued\s+)?(\d{4})\)\s*$", line.strip())
         if m:
             title = m.group(1).strip()
             issuer = ""
@@ -189,7 +202,7 @@ def parse_certifications(md: str) -> list[dict[str, str]]:
 
 
 def parse_awards(md: str) -> list[dict[str, str]]:
-    body = section_body(md, "Awards & recognition", ["Education"])
+    body = section_body(md, "Awards & recognition", TAIL_HEADINGS[3:])
     if not body:
         return []
     awards: list[dict[str, str]] = []
@@ -228,34 +241,72 @@ def parse_awards(md: str) -> list[dict[str, str]]:
     return awards
 
 
-def parse_education(md: str) -> dict[str, str]:
+def parse_education(md: str) -> list[dict[str, str]]:
     body = section_body(md, "Education", [])
     if not body:
         raise ValueError("Missing ## Education")
-    line = body.strip().splitlines()[0].strip()
-    # Degree — School (years), CGPA x
-    m = re.match(
-        r"(.+?)\s*—\s*(.+?)\s*\((.+?)\)(?:,\s*CGPA\s*(.+))?$",
-        line,
-    )
-    if not m:
-        raise ValueError(
-            f"Education line must be 'Degree — School (years), CGPA x', got: {line!r}"
+    items: list[dict[str, str]] = []
+    for raw in body.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if line.startswith("- "):
+            line = line[2:].strip()
+        # Degree — School (years), CGPA x | 69%
+        m = re.match(
+            r"(.+?)\s*—\s*(.+?)\s*\((.+?)\)(?:,\s*(?:CGPA\s*)?(.+))?$",
+            line,
         )
-    degree = m.group(1).strip()
-    school = m.group(2).strip()
-    period = m.group(3).strip().replace("–", " - ")
-    grade = f"CGPA {m.group(4).strip()}" if m.group(4) else ""
-    area = ""
-    if "Electrical" in degree:
-        area = "Electrical Engineering"
-    return {
-        "degree": degree,
-        "school": school,
-        "period": period,
-        "grade": grade,
-        "area": area,
-    }
+        if not m:
+            raise ValueError(
+                f"Education line must be 'Degree — School (years), grade', got: {raw!r}"
+            )
+        degree = m.group(1).strip()
+        school = m.group(2).strip()
+        period = m.group(3).strip().replace("–", " - ")
+        raw_grade = (m.group(4) or "").strip()
+        if raw_grade and not re.search(r"(?i)cgpa|%", raw_grade):
+            grade = f"CGPA {raw_grade}"
+        else:
+            grade = raw_grade
+        area = ""
+        if "Electrical" in degree:
+            area = "Electrical Engineering"
+        items.append(
+            {
+                "degree": degree,
+                "school": school,
+                "period": period,
+                "grade": grade,
+                "area": area,
+            }
+        )
+    if not items:
+        raise ValueError("No education rows found under ## Education")
+    return items
+
+
+def parse_languages(md: str) -> list[dict[str, str]]:
+    body = section_body(md, "Languages", ["Education"])
+    if not body:
+        return []
+    items: list[dict[str, str]] = []
+    for raw in body.splitlines():
+        line = raw.strip()
+        if not line.startswith("- "):
+            continue
+        text = line[2:].strip()
+        m = re.match(r"(.+?)\s*\((.+)\)\s*$", text)
+        if m:
+            items.append(
+                {
+                    "language": m.group(1).strip(),
+                    "fluency": m.group(2).strip().capitalize(),
+                }
+            )
+        else:
+            items.append({"language": text, "fluency": ""})
+    return items
 
 
 def parse_basics(md: str) -> dict[str, str]:
@@ -267,6 +318,9 @@ def parse_basics(md: str) -> dict[str, str]:
     parts = [p.strip() for p in contact.split("·")]
     location = parts[0] if parts else ""
     email = next((p for p in parts if "@" in p), "")
+    em = re.match(r"\[([^\]]+)\]\(mailto:[^)]+\)", email)
+    if em:
+        email = em.group(1)
     phone = next(
         (p for p in parts if re.search(r"\+?\d[\d\s-]{8,}", p)),
         "",
@@ -297,36 +351,88 @@ def fill_template(
     skills: list[dict[str, Any]],
     certs: list[dict[str, str]],
     awards: list[dict[str, str]],
-    education: dict[str, str],
+    education: list[dict[str, str]],
+    languages: list[dict[str, str]],
     headline: str | None,
 ) -> dict[str, Any]:
     out = copy.deepcopy(template)
 
+    picture = out.get("picture")
+    if isinstance(picture, dict):
+        picture["url"] = ""
+        picture["hidden"] = True
+
     out["basics"]["name"] = basics["name"]
-    out["basics"]["email"] = basics["email"] or out["basics"].get("email", "")
-    out["basics"]["phone"] = basics["phone"] or out["basics"].get("phone", "")
-    out["basics"]["location"] = basics["location"] or out["basics"].get("location", "")
-    if basics["linkedin"]:
-        out["basics"]["website"] = {
-            "url": basics["linkedin"],
-            "label": "LinkedIn",
-        }
+    out["basics"]["email"] = basics["email"]
+    out["basics"]["phone"] = basics["phone"]
+    out["basics"]["location"] = basics["location"]
+    out["basics"]["website"] = (
+        {"url": basics["linkedin"], "label": "LinkedIn"}
+        if basics["linkedin"]
+        else {"url": "", "label": ""}
+    )
     # Headline: first job title if not provided
     out["basics"]["headline"] = headline or (jobs[0]["position"] if jobs else "")
+    out["basics"]["customFields"] = (
+        [
+            {
+                "id": new_id(),
+                "icon": "acorn",
+                "text": basics["github"],
+                "link": "",
+            }
+        ]
+        if basics["github"]
+        else []
+    )
 
-    if basics["github"]:
-        cfs = out["basics"].get("customFields") or []
-        if cfs:
-            cfs[0]["text"] = basics["github"]
-        else:
-            out["basics"]["customFields"] = [
+    profiles = out.get("sections", {}).get("profiles")
+    if isinstance(profiles, dict):
+        profile_items: list[dict[str, Any]] = []
+        if basics["linkedin"]:
+            profile_items.append(
                 {
                     "id": new_id(),
-                    "icon": "acorn",
-                    "text": basics["github"],
-                    "link": "",
+                    "hidden": False,
+                    "icon": "linkedin-logo",
+                    "iconColor": "",
+                    "network": "LinkedIn",
+                    "username": "",
+                    "website": {
+                        "url": basics["linkedin"],
+                        "label": "LinkedIn",
+                        "inlineLink": False,
+                    },
                 }
-            ]
+            )
+        if basics["github"]:
+            profile_items.append(
+                {
+                    "id": new_id(),
+                    "hidden": False,
+                    "icon": "github-logo",
+                    "iconColor": "",
+                    "network": "GitHub",
+                    "username": "",
+                    "website": {
+                        "url": basics["github"],
+                        "label": "GitHub",
+                        "inlineLink": False,
+                    },
+                }
+            )
+        profiles["items"] = profile_items
+
+    for section_name in (
+        "projects",
+        "interests",
+        "publications",
+        "volunteer",
+        "references",
+    ):
+        section = out.get("sections", {}).get(section_name)
+        if isinstance(section, dict) and "items" in section:
+            section["items"] = []
 
     out["summary"]["content"] = f"<p>{esc_html(summary)}</p>"
 
@@ -379,30 +485,34 @@ def fill_template(
         new_skills.append(item)
     out["sections"]["skills"]["items"] = new_skills
 
-    # Education — single B.Tech-style row from markdown
-    edu_template = (
-        copy.deepcopy(out["sections"]["education"]["items"][0])
-        if out["sections"]["education"]["items"]
-        else {
-            "id": new_id(),
-            "hidden": False,
-            "website": {"url": "", "label": "", "inlineLink": False},
-            "description": "",
-            "location": "",
-        }
-    )
-    edu_template.update(
-        {
-            "hidden": False,
-            "school": education["school"],
-            "degree": education["degree"],
-            "area": education["area"],
-            "grade": education["grade"],
-            "period": education["period"],
-            "description": "",
-        }
-    )
-    out["sections"]["education"]["items"] = [edu_template]
+    # Education — every markdown row (B.Tech, 12th, 10th, …)
+    old_edu = out["sections"]["education"]["items"]
+    new_edu: list[dict[str, Any]] = []
+    for i, ed in enumerate(education):
+        item = (
+            copy.deepcopy(old_edu[i])
+            if i < len(old_edu)
+            else {
+                "id": new_id(),
+                "hidden": False,
+                "website": {"url": "", "label": "", "inlineLink": False},
+                "description": "",
+                "location": "",
+            }
+        )
+        item.update(
+            {
+                "hidden": False,
+                "school": ed["school"],
+                "degree": ed["degree"],
+                "area": ed["area"],
+                "grade": ed["grade"],
+                "period": ed["period"],
+                "description": "",
+            }
+        )
+        new_edu.append(item)
+    out["sections"]["education"]["items"] = new_edu
 
     # Certifications
     old_certs = out["sections"]["certifications"]["items"]
@@ -456,6 +566,30 @@ def fill_template(
         new_awards.append(item)
     out["sections"]["awards"]["items"] = new_awards
 
+    lang_section = out.get("sections", {}).get("languages")
+    if isinstance(lang_section, dict):
+        old_langs = lang_section.get("items") or []
+        new_langs: list[dict[str, Any]] = []
+        for i, lang in enumerate(languages):
+            item = (
+                copy.deepcopy(old_langs[i])
+                if i < len(old_langs)
+                else {
+                    "id": new_id(),
+                    "hidden": False,
+                    "level": 5 if lang["fluency"].lower() == "native" else 0,
+                }
+            )
+            item.update(
+                {
+                    "hidden": False,
+                    "language": lang["language"],
+                    "fluency": lang["fluency"],
+                }
+            )
+            new_langs.append(item)
+        lang_section["items"] = new_langs
+
     # Layout: experience before education (reader skim)
     pages = out.get("metadata", {}).get("layout", {}).get("pages", [])
     if pages:
@@ -473,14 +607,27 @@ def fill_template(
     return out
 
 
-def infer_company_and_role(md_path: Path) -> tuple[str, str | None]:
+def profile_dir_exists(slug: str) -> bool:
+    return (REPO_ROOT / "profiles" / slug).is_dir()
+
+
+def profile_api_key_env(profile: str) -> str:
+    return "RXRESU_API_KEY_" + profile.strip().upper().replace("-", "_")
+
+
+def infer_profile_company_and_role(
+    md_path: Path,
+) -> tuple[str | None, str, str | None]:
     """
-    Derive company (and optional role) from the markdown path.
+    Derive profile, company, and optional role from the markdown path.
 
     Supported layouts (first match wins):
-      .../jobs/<company>/<role>/tailored-resume.md
+      .../jobs/<profile>/<company>/<role>/tailored-resume.md
+        when profiles/<profile>/ exists
+      .../jobs/<profile>/<company>/tailored-resume.md
+      .../jobs/<company>/<role>/tailored-resume.md   # legacy, no profile folder
       .../jobs/<company>/tailored-resume.md
-      .../<company>/<role>/tailored-resume.md   # role folder is last path segment before file
+      .../<company>/<role>/tailored-resume.md
       .../<company>/tailored-resume.md
     """
     path = md_path.resolve()
@@ -496,6 +643,8 @@ def infer_company_and_role(md_path: Path) -> tuple[str, str | None]:
         "resume-agent-skills",
         ".cursor",
         "skills",
+        "profiles",
+        "jobs",
     }
 
     def looks_like_role(segment: str) -> bool:
@@ -509,30 +658,34 @@ def infer_company_and_role(md_path: Path) -> tuple[str, str | None]:
 
     if "jobs" in parts:
         i = parts.index("jobs")
-        if i + 1 >= len(parts) - 1:
-            raise ValueError(
-                f"Path has 'jobs' but no company segment: {path}"
-            )
-        company = parts[i + 1]
-        role: str | None = None
-        if i + 2 < len(parts) - 1:
-            role = parts[i + 2]
-        return company, role
+        after = parts[i + 1 : -1]
+        if not after:
+            raise ValueError(f"Path has 'jobs' but no company segment: {path}")
+        if profile_dir_exists(after[0]):
+            rest = after[1:]
+            if not rest:
+                raise ValueError(
+                    f"Path has profile {after[0]!r} but no company segment: {path}"
+                )
+            role = rest[1] if len(rest) > 1 else None
+            return after[0], rest[0], role
+        role = after[1] if len(after) > 1 else None
+        return None, after[0], role
 
     parent = path.parent.name
     grandparent = path.parent.parent.name if path.parent.parent != path.parent else ""
 
-    if parent.lower() not in reserved and parent not in {".", ""}:
+    if parent.lower() not in reserved and parent not in {".", ""} and grandparent != "profiles":
         if looks_like_role(parent) and grandparent.lower() not in reserved and grandparent:
-            return grandparent, parent
-        return parent, None
+            return None, grandparent, parent
+        return None, parent, None
 
     if grandparent.lower() not in reserved and grandparent:
-        return grandparent, None
+        return None, grandparent, None
 
     raise ValueError(
         f"Could not infer company from path {path}. "
-        "Put the file under jobs/<company>/... or pass --company."
+        "Put the file under jobs/<profile>/<company>/... or pass --company."
     )
 
 
@@ -542,15 +695,28 @@ def convert(
     out_root: Path,
     company: str | None = None,
     role_slug: str | None = None,
-    name_slug: str = "abhishek-das",
+    name_slug: str | None = None,
     headline: str | None = None,
+    profile: str | None = None,
 ) -> dict[str, Any]:
     md = md_path.read_text(encoding="utf-8")
     template = json.loads(template_path.read_text(encoding="utf-8"))
 
-    inferred_company, inferred_role = None, None
-    if company is None or role_slug is None:
-        inferred_company, inferred_role = infer_company_and_role(md_path)
+    inferred_profile, inferred_company, inferred_role = None, None, None
+    if company is None or role_slug is None or profile is None:
+        try:
+            inferred_profile, inferred_company, inferred_role = (
+                infer_profile_company_and_role(md_path)
+            )
+        except ValueError:
+            if company is None:
+                raise
+
+    if profile and inferred_profile and slugify_company(profile) != inferred_profile:
+        raise ValueError(
+            f"--profile {profile!r} does not match profile {inferred_profile!r} in {md_path}"
+        )
+    resolved_profile = slugify_company(profile) if profile else inferred_profile
 
     company_value = company or inferred_company
     if not company_value:
@@ -571,6 +737,7 @@ def convert(
     skills = parse_skills(md)
     certs = parse_certifications(md)
     awards = parse_awards(md)
+    languages = parse_languages(md)
     education = parse_education(md)
 
     data = fill_template(
@@ -582,11 +749,17 @@ def convert(
         certs=certs,
         awards=awards,
         education=education,
+        languages=languages,
         headline=headline,
     )
 
-    resume_basename = f"{name_slug}-{resolved_role}-{company_slug}"
-    out_dir = out_root / company_slug
+    resolved_name = name_slug or slugify_company(basics["name"])
+    resume_basename = f"{resolved_name}-{resolved_role}-{company_slug}"
+    out_dir = (
+        out_root / resolved_profile / company_slug
+        if resolved_profile
+        else out_root / company_slug
+    )
     out_dir.mkdir(parents=True, exist_ok=True)
     out_file = out_dir / f"{resume_basename}.json"
     out_file.write_text(
@@ -598,6 +771,7 @@ def convert(
         "data": data,
         "name": resume_basename,
         "slug": resume_basename,
+        "profile": resolved_profile,
         "company_slug": company_slug,
         "role_slug": resolved_role,
         "tags": [company_slug, resolved_role],
@@ -619,27 +793,55 @@ def load_env_file(path: Path) -> None:
             os.environ[key] = val
 
 
-def resolve_api_key() -> str:
+def _key_from_files(tool_root: Path) -> str:
+    for candidate in (
+        tool_root / "reactive-resume-api-key.txt",
+        tool_root / ".rxresu_api_key",
+    ):
+        if candidate.is_file():
+            key = candidate.read_text(encoding="utf-8").strip().splitlines()[0].strip()
+            if key:
+                return key
+    return ""
+
+
+def resolve_api_key(profile: str | None = None) -> str:
     tool_root = Path(__file__).resolve().parent.parent
-    repo_root = tool_root.parent.parent  # resume-agent-skills/
     # Prefer shared repo-root .env for all PATs; tool-local files remain fallbacks.
-    load_env_file(repo_root / ".env")
+    load_env_file(REPO_ROOT / ".env")
     load_env_file(tool_root / ".env")
+
+    if profile:
+        env_name = profile_api_key_env(profile)
+        key = (os.environ.get(env_name) or "").strip()
+        if key:
+            return key
+        if profile == "abhishek":
+            key = (
+                os.environ.get("RXRESU_API_KEY")
+                or os.environ.get("REACTIVE_RESUME_API_KEY")
+                or _key_from_files(tool_root)
+                or ""
+            ).strip()
+            if key:
+                return key
+            raise ValueError(
+                f"Missing API key for profile {profile!r}. "
+                f"Set {env_name} in repo-root .env, or set RXRESU_API_KEY. "
+                "Create a key at https://rxresu.me → Settings → API Keys."
+            )
+        raise ValueError(
+            f"Missing API key for profile {profile!r}. "
+            f"Set {env_name} in repo-root .env. "
+            "This profile does not use another person's key."
+        )
+
     key = (
         os.environ.get("RXRESU_API_KEY")
         or os.environ.get("REACTIVE_RESUME_API_KEY")
+        or _key_from_files(tool_root)
         or ""
     ).strip()
-    if not key:
-        # Plain key file (single line) — preferred local drop for Cursor users
-        for candidate in (
-            tool_root / "reactive-resume-api-key.txt",
-            tool_root / ".rxresu_api_key",
-        ):
-            if candidate.is_file():
-                key = candidate.read_text(encoding="utf-8").strip().splitlines()[0].strip()
-                if key:
-                    break
     if not key:
         raise ValueError(
             "Missing API key. Set RXRESU_API_KEY in repo-root .env "
@@ -774,9 +976,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Role slug in filename (optional; inferred from path, else em)",
     )
     p.add_argument(
+        "--profile",
+        default=None,
+        help="Profile slug. Selects RXRESU_API_KEY_<SLUG> and output/<profile>/",
+    )
+    p.add_argument(
         "--name-slug",
-        default="abhishek-das",
-        help="Name slug prefix (default: abhishek-das)",
+        default=None,
+        help="Name slug prefix (default: slug of the markdown # Name line)",
     )
     p.add_argument(
         "--headline",
@@ -793,12 +1000,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--out-root",
         type=Path,
         default=default_out,
-        help="Output root; creates <out-root>/<company-slug>/",
+        help="Output root; creates <out-root>/<profile>/<company-slug>/",
     )
     p.add_argument(
         "--upload",
         action="store_true",
-        help="Upload to Reactive Resume via API (requires RXRESU_API_KEY)",
+        help="Upload to Reactive Resume via API (requires that profile's RXRESU_API_KEY_<SLUG>)",
     )
     p.add_argument(
         "--no-upload",
@@ -830,12 +1037,15 @@ def main(argv: list[str] | None = None) -> int:
             role_slug=args.role,
             name_slug=args.name_slug,
             headline=args.headline,
+            profile=args.profile,
         )
     except Exception as e:
         print(f"Conversion failed: {e}", file=sys.stderr)
         return 1
 
     print(f"json: {result['path']}")
+    if result.get("profile"):
+        print(f"profile: {result['profile']}")
 
     do_upload = args.upload and not args.no_upload
     if do_upload:
@@ -846,6 +1056,7 @@ def main(argv: list[str] | None = None) -> int:
                 slug=result["slug"],
                 tags=result["tags"],
                 api_base=args.api_base,
+                api_key=resolve_api_key(result.get("profile")),
             )
         except Exception as e:
             print(f"Upload failed: {e}", file=sys.stderr)

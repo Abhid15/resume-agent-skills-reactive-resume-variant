@@ -1,6 +1,6 @@
 # Master profile contract
 
-`resume.md` is the master profile.
+`profiles/<slug>/resume.md` is the master profile for that person.
 
 - Anything in the JD that cannot be traced to `resume.md` → **Do not add** section only.
 - Tailored resume is a **view** of the master profile for one role, not a second truth source.

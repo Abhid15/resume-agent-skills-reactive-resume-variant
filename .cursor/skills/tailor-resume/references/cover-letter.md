@@ -1,6 +1,6 @@
 # Cover letter
 
-Write `jobs/<company-slug>/<role-slug>/cover-letter.md` on every tailor run.
+Write `jobs/<profile-slug>/<company-slug>/<role-slug>/cover-letter.md` on every tailor run.
 
 ## Fact contract
 

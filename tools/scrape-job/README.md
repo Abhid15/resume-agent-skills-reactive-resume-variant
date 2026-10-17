@@ -1,6 +1,6 @@
 # scrape-job
 
-Scrape a job posting URL to `jobs/<company>/<role>/jd.md` using **Firecrawl Cloud**.
+Scrape a job posting URL to `jobs/<profile>/<company>/<role>/jd.md` using **Firecrawl Cloud**.
 
 Prefer the [Firecrawl skill](../../.cursor/skills/firecrawl/SKILL.md) / CLI when available. This script is the **fallback** (and a convenient path helper) used by `tailor-resume` ingest.
 
@@ -17,16 +17,17 @@ From repo root:
 ```powershell
 python tools/scrape-job/scripts/scrape_job.py `
   --url "https://example.com/jobs/123" `
+  --profile abhishek `
   --company acme `
   --role software-engineering-manager
 ```
 
-Optional: `--api-only` to skip the `firecrawl` CLI and call the HTTP API directly.
+Optional: `--api-only` to skip the `firecrawl` CLI and call the HTTP API directly. Omit `--profile` only for the older `jobs/<company>/<role>/` layout.
 
 ## Output
 
 ```text
-jobs/<company-slug>/<role-slug>/jd.md
+jobs/<profile-slug>/<company-slug>/<role-slug>/jd.md
 ```
 
 Front matter includes `source_url` and `scraped_at`.

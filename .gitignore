@@ -15,3 +15,6 @@ tools/scrape-job/firecrawl-api-key.txt
 # Local source dumps / PDF exports (do not commit)
 *.pdf
 ad-*-resume.json
+# Source resumes are personal data — keep local, never commit
+resume.md
+profiles/**/resume.md

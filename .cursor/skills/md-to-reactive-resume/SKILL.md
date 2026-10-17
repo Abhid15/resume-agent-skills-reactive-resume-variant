@@ -1,10 +1,11 @@
 ---
 name: md-to-reactive-resume
 description: >-
-  Convert tailored-resume.md to Reactive Resume JSON and upload it to rxresu.me
-  via the API. Infers company from the markdown path. Use when the user invokes
-  md-to-reactive-resume, asks to convert/upload a tailored resume to Reactive
-  Resume, or needs abhishek-das-em-<company>.json on rxresu.me.
+  Convert tailored-resume.md to Reactive Resume JSON and upload it to that
+  profile's rxresu.me account via the API. Infers profile and company from the
+  markdown path. Use when the user invokes md-to-reactive-resume, asks to
+  convert/upload a tailored resume to Reactive Resume, or needs
+  <name>-<role>-<company>.json on rxresu.me.
 disable-model-invocation: true
 ---
 
@@ -13,14 +14,14 @@ disable-model-invocation: true
 Deterministic MD → Reactive Resume JSON → **upload to rxresu.me**.  
 Do **not** hand-write JSON or invent resume facts.
 
-## Prerequisites (once)
+## Prerequisites (once per profile)
 
 1. Create an API key at [rxresu.me](https://rxresu.me) → Settings → API Keys  
    ([docs](https://docs.rxresu.me/guides/using-the-api))
-2. Store it (pick one; never commit):
-   - `tools/md-to-reactive-resume/reactive-resume-api-key.txt` (single-line key), or
-   - `tools/md-to-reactive-resume/.env` with `RXRESU_API_KEY=...`, or
-   - env var `RXRESU_API_KEY`
+2. Store it in repo-root `.env` as `RXRESU_API_KEY_<SLUG>` (never commit):
+   - Profile `jane-doe` → `RXRESU_API_KEY_JANE_DOE`
+   - Profile `abhishek` may fall back to `RXRESU_API_KEY` when `RXRESU_API_KEY_ABHISHEK` is unset
+3. Other profiles do not fall back to another person's key or to the tool-local key file.
 
 Never print or commit the API key.
 
@@ -30,9 +31,9 @@ User points at a tailored markdown and asks for this skill / convert+upload.
 
 ## Steps
 
-1. Resolve the input `.md` path (usually `jobs/<company>/<role>/tailored-resume.md`).
-2. Run the converter **with `--upload`** (company/role inferred from path).
-3. Reply with: local JSON path, resume id, name/slug, and dashboard link.
+1. Resolve the input `.md` path (usually `jobs/<profile>/<company>/<role>/tailored-resume.md`).
+2. Run the converter **with `--upload`** (profile/company/role inferred from path).
+3. Reply with: local JSON path, profile, resume id, name/slug, and dashboard link.
 
 ## Command
 
@@ -46,26 +47,32 @@ python tools/md-to-reactive-resume/scripts/md_to_reactive_resume.py `
 
 Use `--no-upload` only if the user explicitly wants a local JSON file and no API call.
 
-## Path → company (and role)
+## Path → profile, company, and role
 
-| Markdown location | Company | Role slug |
-|-------------------|---------|-----------|
-| `jobs/coinbase/em/tailored-resume.md` | `coinbase` | `em` |
-| `jobs/coupa-software/tailored-resume.md` | `coupa-software` | `em` (default) |
-| `jobs/coinbase/engineering-manager/tailored-resume.md` | `coinbase` | `engineering-manager` |
+| Markdown location | Profile | Company | Role slug |
+|-------------------|---------|---------|-----------|
+| `jobs/abhishek/coinbase/em/tailored-resume.md` | `abhishek` | `coinbase` | `em` |
+| `jobs/jane-doe/coinbase/engineering-manager/tailored-resume.md` | `jane-doe` | `coinbase` | `engineering-manager` |
+| `jobs/coinbase/em/tailored-resume.md` | (none; legacy) | `coinbase` | `em` |
+
+The first folder under `jobs/` is a profile when `profiles/<that-folder>/` exists. Otherwise it is the company (older layout).
+
+The filename prefix is the slug of the markdown `# Name` line, unless `--name-slug` is passed.
 
 ## Outputs
 
 **Local**
 ```
-output/<company-slug>/abhishek-das-<role>-<company-slug>.json
+output/<profile>/<company-slug>/<name-slug>-<role>-<company-slug>.json
 ```
 
 **Remote (upload)**  
 `POST /api/openapi/resumes/import` then `PUT /resumes/{id}` to set:
 
-- `name` / `slug`: `abhishek-das-<role>-<company-slug>`
+- `name` / `slug`: `<name-slug>-<role>-<company-slug>`
 - `tags`: `[company-slug, role]`
+
+The request uses that profile's API key, so the resume lands on their rxresu.me account.
 
 Open: https://rxresu.me/dashboard/resumes
 
@@ -74,3 +81,4 @@ Open: https://rxresu.me/dashboard/resumes
 - Re-implement conversion or upload in chat
 - Skip `--upload` unless the user asks for local-only
 - Paste API keys into chat or commit `.env`
+- Upload one profile's resume with another profile's key

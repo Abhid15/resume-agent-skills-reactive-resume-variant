@@ -178,9 +178,14 @@ def main() -> None:
     parser.add_argument("--company", "-c", help="Company slug or name")
     parser.add_argument("--role", "-r", help="Role slug or title")
     parser.add_argument(
+        "--profile",
+        "-p",
+        help="Profile slug (default output: jobs/<profile>/<company>/<role>/jd.md)",
+    )
+    parser.add_argument(
         "--out",
         "-o",
-        help="Output path (default: jobs/<company>/<role>/jd.md)",
+        help="Output path (default: jobs/<profile>/<company>/<role>/jd.md when --profile is set)",
     )
     parser.add_argument(
         "--api-only",
@@ -190,12 +195,20 @@ def main() -> None:
     args = parser.parse_args()
 
     company, role = infer_company_role(args.url, args.company, args.role)
-    out = Path(args.out) if args.out else REPO_ROOT / "jobs" / company / role / "jd.md"
+    profile = slugify(args.profile) if args.profile else ""
+    if args.out:
+        out = Path(args.out)
+    elif profile:
+        out = REPO_ROOT / "jobs" / profile / company / role / "jd.md"
+    else:
+        out = REPO_ROOT / "jobs" / company / role / "jd.md"
     if not out.is_absolute():
         out = REPO_ROOT / out
 
     if not args.api_only and scrape_via_cli(args.url, out):
         print(f"jd: {out}")
+        if profile:
+            print(f"profile_slug: {profile}")
         print(f"company_slug: {company}")
         print(f"role_slug: {role}")
         print("method: firecrawl-cli")
@@ -203,6 +216,8 @@ def main() -> None:
 
     scrape_via_api(args.url, out)
     print(f"jd: {out}")
+    if profile:
+        print(f"profile_slug: {profile}")
     print(f"company_slug: {company}")
     print(f"role_slug: {role}")
     print("method: firecrawl-api")
